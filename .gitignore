@@ -1,0 +1,13 @@
+# Cache do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ambientes Virtuais (VENV)
+venv/
+env/
+.env/
+
+# IDEs (VS Code, PyCharm)
+.vscode/
+.idea/
