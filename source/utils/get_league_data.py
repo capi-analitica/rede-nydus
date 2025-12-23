@@ -1,4 +1,5 @@
 import requests
+import pandas as pd
 
 
 def league_data(season_id, queue_id, team_type, league_id, token ,region='us'):
@@ -17,5 +18,31 @@ def league_data(season_id, queue_id, team_type, league_id, token ,region='us'):
     response = requests.get(url, headers=headers)
     response.raise_for_status()
     data = response.json()
-    
-    return data
+
+    all_data = []
+
+    for i, tier in enumerate(data['tier']):
+        # Normalizar as divisões do tier atual
+        df_divisions = pd.json_normalize(tier['division'])
+        
+        # Adicionar informações do tier às divisões
+        df_divisions['tier_index'] = i
+        df_divisions['tier_min_rating'] = tier['min_rating']
+        df_divisions['tier_max_rating'] = tier['max_rating']
+        
+        # Adicionar à lista
+        all_data.append(df_divisions)
+
+    # Concatenar todos os DataFrames em um só
+    df_completo = pd.concat(all_data, ignore_index=True)
+
+    # Adicionar informações globais da chave (temporada, liga, etc)
+    df_completo['season_id'] = data['key']['season_id']
+    df_completo['queue_id'] = data['key']['queue_id']
+    df_completo['league_id'] = data['key']['league_id']
+
+    # Armazenar o resultado na variável para uso posterior  
+    return df_completo
+
+
+
