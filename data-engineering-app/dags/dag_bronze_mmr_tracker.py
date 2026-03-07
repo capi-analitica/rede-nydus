@@ -2,7 +2,12 @@ import sys
 import os
 import time
 import json
+from dotenv import load_dotenv
 from concurrent.futures import ThreadPoolExecutor, as_completed
+
+# Tenta carregar o arquivo .env se estiver rodando localmente (fora do docker)
+load_dotenv()
+
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime
@@ -13,7 +18,7 @@ sys.path.append('/opt/airflow/source')
 from utils.get_token import get_battle_net_access_token
 from utils.get_league_data import get_league_data_raw
 from utils.get_ladder import fetch_ladder_modern_raw, fetch_ladder_legacy_raw
-from utils.get_match_history import fetch_match_history
+from utils.get_match_history import fetch_match_history_raw
 
 # Credenciais vindas de Váriaveis de Ambiente (Para não expor no GitHub)
 CLIENT_ID = os.getenv('BLIZZARD_CLIENT_ID', 'COLOQUE_SEU_CLIENT_ID_AQUI')

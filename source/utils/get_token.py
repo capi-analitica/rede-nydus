@@ -1,7 +1,9 @@
 import requests
 from requests.auth import HTTPBasicAuth
 
-def get_battle_net_access_token(client_id: str, client_secret: str, region: str = 'us') -> str | None:
+from typing import Optional
+
+def get_battle_net_access_token(client_id: str, client_secret: str, region: str = 'us') -> Optional[str]:
     """
     Realiza uma requisição POST para a API OAuth2 da Battle.net para obter um
     access token usando o fluxo Client Credentials.
