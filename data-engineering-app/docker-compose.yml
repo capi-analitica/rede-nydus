@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - data-network
+
+  airflow:
+    image: apache/airflow:2.7.2
+    command: standalone
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://user:password@postgres:5432/mydatabase
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://user:password@postgres:5432/mydatabase
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      _AIRFLOW_WWW_USER_CREATE: 'true'
+      _AIRFLOW_WWW_USER_USERNAME: 'admin'
+      _AIRFLOW_WWW_USER_PASSWORD: 'admin'
+      BLIZZARD_CLIENT_ID: ${BLIZZARD_CLIENT_ID}
+      BLIZZARD_CLIENT_SECRET: ${BLIZZARD_CLIENT_SECRET}
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ../source:/opt/airflow/source
+    depends_on:
+      - postgres
+    networks:
+      - data-network
+
+networks:
+  data-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
