@@ -14,3 +14,5 @@ rede-nydus/
 # IDEs (VS Code, PyCharm)
 .vscode/
 .idea/
+# Ignorar dados brutos da Camada Bronze
+source/bronze/
