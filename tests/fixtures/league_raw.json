@@ -1,0 +1,27 @@
+{
+  "key": {
+    "season_id": 66,
+    "queue_id": 201,
+    "team_type": 0,
+    "league_id": 4
+  },
+  "tier": [
+    {
+      "id": 0,
+      "min_rating": 4000,
+      "max_rating": 5000,
+      "division": [
+        {"id": 0, "ladder_id": 101, "member_count": 50},
+        {"id": 1, "ladder_id": 102, "member_count": 45}
+      ]
+    },
+    {
+      "id": 1,
+      "min_rating": 3000,
+      "max_rating": 3999,
+      "division": [
+        {"id": 0, "ladder_id": 201, "member_count": 30}
+      ]
+    }
+  ]
+}

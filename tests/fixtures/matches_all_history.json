@@ -1,0 +1,43 @@
+[
+  {
+    "request_profile_id": 1234567,
+    "request_realm_id": 1,
+    "request_region_id": 1,
+    "matches": [
+      {
+        "date": 1741000000,
+        "map": "Equilibrium",
+        "type": "SOLO",
+        "decision": "WIN",
+        "speed": "FASTER"
+      },
+      {
+        "date": 1740900000,
+        "map": "Solaris",
+        "type": "SOLO",
+        "decision": "LOSS",
+        "speed": "FASTER"
+      }
+    ]
+  },
+  {
+    "request_profile_id": 7654321,
+    "request_realm_id": 1,
+    "request_region_id": 1,
+    "matches": [
+      {
+        "date": 1741050000,
+        "map": "Vermeer",
+        "type": "SOLO",
+        "decision": "WIN",
+        "speed": "FASTER"
+      }
+    ]
+  },
+  {
+    "request_profile_id": 9999999,
+    "request_realm_id": 1,
+    "request_region_id": 1,
+    "matches": []
+  }
+]

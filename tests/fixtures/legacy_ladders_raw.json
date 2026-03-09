@@ -1,0 +1,52 @@
+[
+  {
+    "ladder_id": 101,
+    "data": {
+      "ladderMembers": [
+        {
+          "character": {
+            "id": 1234567,
+            "realm": 1,
+            "region": 1,
+            "displayName": "PlayerOne",
+            "clanName": "Nydus Warriors",
+            "clanTag": "NYDUS",
+            "profilePath": "/profile/1/1/1234567/"
+          },
+          "joinTimestamp": 1700000000,
+          "points": 100,
+          "wins": 10,
+          "losses": 5,
+          "highestRank": 1,
+          "previousRank": 2,
+          "favoriteRaceP1": "Zerg"
+        }
+      ]
+    }
+  },
+  {
+    "ladder_id": 102,
+    "data": {
+      "ladderMembers": [
+        {
+          "character": {
+            "id": 7654321,
+            "realm": 1,
+            "region": 1,
+            "displayName": "PlayerTwo",
+            "clanName": null,
+            "clanTag": null,
+            "profilePath": "/profile/1/1/7654321/"
+          },
+          "joinTimestamp": 1700000100,
+          "points": 80,
+          "wins": 8,
+          "losses": 7,
+          "highestRank": 3,
+          "previousRank": 6,
+          "favoriteRaceP1": "Protoss"
+        }
+      ]
+    }
+  }
+]

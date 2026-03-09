@@ -1,0 +1,86 @@
+[
+  {
+    "ladder_id": 101,
+    "data": {
+      "team": [
+        {
+          "id": 9900000000001,
+          "rating": 4200,
+          "wins": 10,
+          "losses": 5,
+          "ties": 0,
+          "points": 100,
+          "longest_win_streak": 5,
+          "current_win_streak": 2,
+          "current_rank": 1,
+          "highest_rank": 1,
+          "previous_rank": 2,
+          "join_time_stamp": 1700000000,
+          "last_played_time_stamp": 1741000000,
+          "member": [
+            {
+              "legacy_link": {"id": 1234567, "realm": 1, "name": "PlayerOne"},
+              "character_link": {"battle_tag": "PlayerOne#1234"},
+              "played_race_count": [
+                {"race": {"en_US": "Zerg"}, "count": 15}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "ladder_id": 102,
+    "data": {
+      "team": [
+        {
+          "id": 9900000000002,
+          "rating": 3800,
+          "wins": 8,
+          "losses": 7,
+          "ties": 1,
+          "points": 80,
+          "longest_win_streak": 3,
+          "current_win_streak": 0,
+          "current_rank": 5,
+          "highest_rank": 3,
+          "previous_rank": 6,
+          "join_time_stamp": 1700000100,
+          "last_played_time_stamp": 1741000100,
+          "member": [
+            {
+              "legacy_link": {"id": 7654321, "realm": 1, "name": "PlayerTwo"},
+              "character_link": {"battle_tag": "PlayerTwo#5678"},
+              "played_race_count": [
+                {"race": {"en_US": "Protoss"}, "count": 10}
+              ]
+            }
+          ]
+        },
+        {
+          "id": 9900000000003,
+          "rating": null,
+          "wins": 0,
+          "losses": 0,
+          "ties": 0,
+          "points": 0,
+          "longest_win_streak": 0,
+          "current_win_streak": 0,
+          "current_rank": 99,
+          "highest_rank": 99,
+          "previous_rank": 99,
+          "join_time_stamp": 1700000200,
+          "last_played_time_stamp": 1741000200,
+          "member": [
+            {
+              "legacy_link": {"id": null, "realm": 1, "name": "NoIdPlayer"},
+              "character_link": {"battle_tag": "NoIdPlayer#0000"},
+              "played_race_count": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+]
