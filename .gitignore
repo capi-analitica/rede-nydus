@@ -8,8 +8,11 @@ __pycache__/
 # Ambientes Virtuais (VENV)
 venv/
 env/
-.env/
 rede-nydus/
+
+# Credenciais (nunca versionar)
+.env
+.env/
 
 # IDEs (VS Code, PyCharm)
 .vscode/
