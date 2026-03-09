@@ -3,6 +3,7 @@ import os
 import time
 import json
 import glob
+import threading
 from dotenv import load_dotenv
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -29,6 +30,31 @@ LEAGUE_IDS = [3, 4, 5, 6]
 # Salva progresso no disco a cada N jogadores para não perder dados
 # em execuções longas que possam ser interrompidas
 CHECKPOINT_EVERY = 500
+
+# Rate limiter: 6 req/s → 21.600 req/h (~60% da cota de 36k)
+# Deixa margem para o dag_bronze_mmr_tracker e para crescimento futuro de ligas
+RATE_LIMIT_RPS = 6
+MATCH_HISTORY_WORKERS = 15
+
+
+class _RateLimiter:
+    """
+    Token bucket simples baseado em Semaphore.
+    Uma thread dedicada repõe 1 token a cada (1/rps) segundos.
+    Workers bloqueiam em acquire() até um token estar disponível,
+    eliminando o sleep fixo por worker e aproveitando o paralelismo de I/O.
+    """
+    def __init__(self, calls_per_second: float):
+        self._sem = threading.Semaphore(0)
+        interval = 1.0 / calls_per_second
+        def _refill():
+            while True:
+                self._sem.release()
+                time.sleep(interval)
+        threading.Thread(target=_refill, daemon=True).start()
+
+    def acquire(self):
+        self._sem.acquire()
 
 
 def _get_token(**context):
@@ -102,10 +128,11 @@ def _extract_matches(**context):
     print(f"Iniciando extração de match history para {len(players)} jogadores...")
 
     all_matches_raw = []
+    rate_limiter = _RateLimiter(RATE_LIMIT_RPS)
 
     def fetch_player_matches(player):
         try:
-            time.sleep(0.5)
+            rate_limiter.acquire()
             data = fetch_match_history_raw(
                 token, player['region'], player['realm'], player['id']
             )
@@ -121,7 +148,7 @@ def _extract_matches(**context):
         batch_end = min(batch_start + CHECKPOINT_EVERY, len(players))
         print(f"[lote] Processando jogadores {batch_start + 1}–{batch_end} de {len(players)}...")
 
-        with ThreadPoolExecutor(max_workers=3) as executor:
+        with ThreadPoolExecutor(max_workers=MATCH_HISTORY_WORKERS) as executor:
             futures = {executor.submit(fetch_player_matches, p): p for p in batch}
             for future in as_completed(futures):
                 result = future.result()
