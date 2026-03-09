@@ -67,6 +67,9 @@ def transform_league_to_silver(bronze_path: str) -> pd.DataFrame:
 
     df = pd.DataFrame(rows)
 
+    if df.empty:
+        return df
+
     int_cols = [
         'season_id', 'queue_id', 'league_id', 'team_type',
         'tier_id', 'tier_min_rating', 'tier_max_rating',
@@ -138,6 +141,9 @@ def transform_modern_ladders_to_silver(bronze_path: str) -> pd.DataFrame:
 
     df = pd.DataFrame(rows)
 
+    if df.empty:
+        return df
+
     int_cols = [
         'league_id', 'ladder_id', 'rating', 'wins', 'losses', 'ties', 'points',
         'longest_win_streak', 'current_win_streak', 'current_rank',
@@ -194,6 +200,9 @@ def transform_legacy_ladders_to_silver(bronze_path: str) -> pd.DataFrame:
 
     df = pd.DataFrame(rows)
 
+    if df.empty:
+        return df
+
     int_cols = [
         'league_id', 'ladder_id', 'character_id', 'realm', 'region',
         'join_timestamp', 'points', 'wins', 'losses',
@@ -240,6 +249,9 @@ def transform_match_history_to_silver(bronze_path: str) -> pd.DataFrame:
             })
 
     df = pd.DataFrame(rows)
+
+    if df.empty:
+        return df
 
     int_cols = ['profile_id', 'realm_id', 'region_id']
     df[int_cols] = df[int_cols].astype('Int64')
