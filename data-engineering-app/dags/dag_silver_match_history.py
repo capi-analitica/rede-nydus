@@ -9,16 +9,17 @@ from datetime import datetime
 sys.path.append('/opt/airflow/source')
 
 from utils.silver_transforms import transform_match_history_to_silver
-from utils.silver_loader import load_match_history
+from utils.silver_loader import load_match_history, is_file_processed, mark_file_processed
 
 BRONZE_PATH = '/opt/airflow/source/bronze'
 
 
 def _process_match_history_to_silver(**context):
     """
-    Encontra o arquivo matches_all_history_*.json mais recente no bronze,
-    transforma em DataFrame flat (uma linha por partida) e retorna via XCom
-    o caminho do arquivo processado.
+    Encontra o arquivo matches_all_history_*.json mais recente no bronze.
+    Se o arquivo já foi processado (silver.processed_files), encerra sem reprocessar.
+    Caso contrário, transforma em DataFrame flat (uma linha por partida) e
+    retorna o caminho do arquivo via XCom para a task de carga.
     """
     files = sorted(glob.glob(f"{BRONZE_PATH}/matches_all_history_*.json"))
     if not files:
@@ -28,8 +29,13 @@ def _process_match_history_to_silver(**context):
         )
 
     latest_file = files[-1]
-    print(f"Processando: {latest_file}")
+    filename = os.path.basename(latest_file)
 
+    if is_file_processed(filename):
+        print(f"Arquivo já processado anteriormente, pulando: {filename}")
+        return None
+
+    print(f"Processando: {latest_file}")
     df = transform_match_history_to_silver(latest_file)
     print(f"DataFrame gerado: {df.shape[0]} linhas, {df.shape[1]} colunas.")
 
@@ -38,12 +44,18 @@ def _process_match_history_to_silver(**context):
 
 def _load_match_history_to_postgres(**context):
     """
-    Carrega o arquivo de match history (transformado) na tabela silver.match_history.
+    Carrega o arquivo de match history na tabela silver.match_history.
+    Marca o arquivo como processado em silver.processed_files ao concluir.
     """
     bronze_file = context['ti'].xcom_pull(task_ids='process_match_history')
 
+    if bronze_file is None:
+        print("Nenhum arquivo novo para carregar.")
+        return
+
     df = transform_match_history_to_silver(bronze_file)
     inserted = load_match_history(df)
+    mark_file_processed(os.path.basename(bronze_file))
     print(f"Carga concluída: {inserted} novas partidas inseridas.")
 
 
