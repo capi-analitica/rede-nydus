@@ -172,7 +172,7 @@ default_args = {
 with DAG(
     'bronze_match_history_scraper',
     default_args=default_args,
-    schedule_interval='@daily',
+    schedule_interval='0 */12 * * *',
     catchup=False,
     max_active_runs=1,
     tags=['starcraft', 'esports', 'data_lake', 'match_history'],
