@@ -1,6 +1,6 @@
 import os
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 import pandas as pd
 
@@ -240,7 +240,7 @@ def transform_match_history_to_silver(bronze_path: str) -> pd.DataFrame:
                 'profile_id':    profile_id,
                 'realm_id':      realm_id,
                 'region_id':     region_id,
-                'match_date':    datetime.utcfromtimestamp(match['date']) if match.get('date') else None,
+                'match_date':    datetime.fromtimestamp(match['date'], tz=timezone.utc).replace(tzinfo=None) if match.get('date') else None,
                 'map':           match.get('map'),
                 'type':          match.get('type'),
                 'decision':      match.get('decision'),
